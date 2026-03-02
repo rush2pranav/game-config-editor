@@ -11,9 +11,8 @@ using System.Windows.Shapes;
 
 namespace ConfigEditor.App
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
+    // Interaction logic for MainWindow.xaml
     public partial class MainWindow : Window
     {
         public MainWindow()

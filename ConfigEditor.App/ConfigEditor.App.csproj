@@ -21,4 +21,8 @@
     <ProjectReference Include="..\ConfigEditor.Shared\ConfigEditor.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<Protobuf Include="..\ConfigEditor.Shared\Protos\config_service.proto" GrpcServices="Client" Link="Protos\config_service.proto" />
+  </ItemGroup>
+
 </Project>
