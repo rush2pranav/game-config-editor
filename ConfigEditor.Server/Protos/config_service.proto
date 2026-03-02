@@ -1,0 +1,102 @@
+syntax = "proto3";
+option csharp_namespace = "ConfigEditor.Shared.Protos";
+package configeditor;
+
+// game config editor gRPC service
+// this helps define the contract betw the WPF client and the server
+
+service ConfigService {
+  // this is for the weapons
+  rpc GetWeapons (GetAllRequest) returns (WeaponListReply);
+  rpc GetWeapon (GetByIdRequest) returns (WeaponReply);
+  rpc SaveWeapon (WeaponReply) returns (SaveReply);
+  rpc DeleteWeapon (GetByIdRequest) returns (SaveReply);
+
+  //this is for the enemies
+  rpc GetEnemies (GetAllRequest) returns (EnemyListReply);
+  rpc GetEnemy (GetByIdRequest) returns (EnemyReply);
+  rpc SaveEnemy (EnemyReply) returns (SaveReply);
+  rpc DeleteEnemy (GetByIdRequest) returns (SaveReply);
+
+  // this is for the items
+  rpc GetItems (GetAllRequest) returns (ItemListReply);
+  rpc GetItem (GetByIdRequest) returns (ItemReply);
+  rpc SaveItem (ItemReply) returns (SaveReply);
+  rpc DeleteItem (GetByIdRequest) returns (SaveReply);
+}
+
+// common messages
+message GetAllRequest {}
+
+message GetByIdRequest {
+  int32 id = 1;
+}
+
+message SaveReply {
+  bool success = 1;
+  string message = 2;
+  int32 id = 3;
+}
+
+// weapon messages
+message WeaponReply {
+  int32 id = 1;
+  string name = 2;
+  string category = 3;
+  int32 damage = 4;
+  double fire_rate = 5;
+  int32 magazine_size = 6;
+  double reload_time = 7;
+  double accuracy = 8;
+  double range = 9;
+  int32 cost = 10;
+  string rarity = 11;
+  bool is_enabled = 12;
+  string description = 13;
+  int32 version = 14;
+}
+
+message WeaponListReply {
+  repeated WeaponReply weapons = 1;
+}
+
+// enemy messages
+message EnemyReply {
+  int32 id = 1;
+  string name = 2;
+  string enemy_type = 3;
+  int32 health = 4;
+  int32 damage = 5;
+  double move_speed = 6;
+  int32 xp_reward = 7;
+  double spawn_chance = 8;
+  int32 min_level = 9;
+  string loot_table = 10;
+  bool is_enabled = 11;
+  string description = 12;
+  int32 version = 13;
+}
+
+message EnemyListReply {
+  repeated EnemyReply enemies = 1;
+}
+
+// item messages
+message ItemReply {
+  int32 id = 1;
+  string name = 2;
+  string item_type = 3;
+  string rarity = 4;
+  int32 value = 5;
+  double drop_rate = 6;
+  int32 max_stack = 7;
+  int32 level_required = 8;
+  bool is_tradeable = 9;
+  bool is_enabled = 10;
+  string description = 11;
+  int32 version = 12;
+}
+
+message ItemListReply {
+  repeated ItemReply items = 1;
+}
