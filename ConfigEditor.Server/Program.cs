@@ -1,14 +1,35 @@
 using ConfigEditor.Server.Services;
+using ConfigEditor.Shared.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// register services
 builder.Services.AddGrpc();
+builder.Services.AddDbContext<ConfigDbContext>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+// initialize and seed db
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ConfigDbContext>();
+    await db.Database.EnsureCreatedAsync();
+    await db.SeedAsync();
+    Console.WriteLine($"Database: {db.DbPath}");
+}
 
-app.Run();
+// map gRPC services
+app.MapGrpcService<GameConfigGrpcService>();
+
+Console.ForegroundColor = ConsoleColor.Cyan;
+Console.WriteLine(@"
+  |--------------------------------------|
+  |  Game Config Editor — gRPC Server    |
+  |   Listening on http://localhost:5080 |
+  |--------------------------------------|
+");
+Console.ResetColor();
+
+app.Run("http://localhost:5080");
